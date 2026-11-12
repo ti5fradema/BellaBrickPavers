@@ -1,16 +1,18 @@
 import { motion } from 'framer-motion'
 import { useContent } from '../context/ContentContext'
+import { useLanguage } from '../context/LanguageContext'
 
 export function About() {
   const { content } = useContent()
+  const { t, L } = useLanguage()
 
   return (
     <section className="section">
       <div className="container">
         <div className="page-hero">
-          <p className="eyebrow">Experience</p>
-          <h1>{content.aboutTitle}</h1>
-          <p className="about-copy">{content.aboutText}</p>
+          <p className="eyebrow">{t('experienceEyebrow')}</p>
+          <h1>{L(content.aboutTitle)}</h1>
+          <p className="about-copy">{L(content.aboutText)}</p>
         </div>
 
         <div
@@ -23,8 +25,8 @@ export function About() {
         />
 
         <div className="section-head">
-          <h2>{content.experienceTitle}</h2>
-          <p>{content.experienceIntro}</p>
+          <h2>{L(content.experienceTitle)}</h2>
+          <p>{L(content.experienceIntro)}</p>
         </div>
 
         <div className="grid-2">
@@ -37,24 +39,24 @@ export function About() {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ delay: index * 0.08 }}
             >
-              <h3>{item.title}</h3>
-              <p className="muted">{item.detail}</p>
+              <h3>{L(item.title)}</h3>
+              <p className="muted">{L(item.detail)}</p>
             </motion.article>
           ))}
         </div>
 
         <div className="contact-strip">
           <div>
-            <strong>Phone</strong>
+            <strong>{t('phoneLabel')}</strong>
             {content.contactPhone}
           </div>
           <div>
-            <strong>Email</strong>
+            <strong>{t('emailLabel')}</strong>
             {content.contactEmail}
           </div>
           <div>
-            <strong>Service area</strong>
-            {content.serviceArea}
+            <strong>{t('serviceAreaLabel')}</strong>
+            {L(content.serviceArea)}
           </div>
         </div>
       </div>

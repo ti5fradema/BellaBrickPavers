@@ -3,9 +3,11 @@ import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { AlbumCard } from '../components/AlbumCard'
 import { useContent } from '../context/ContentContext'
+import { useLanguage } from '../context/LanguageContext'
 
 export function Home() {
   const { content } = useContent()
+  const { t, L } = useLanguage()
   const featured = content.albums.slice(0, 3)
 
   return (
@@ -26,21 +28,21 @@ export function Home() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.15 }}
           >
-            {content.tagline}
+            {L(content.tagline)}
           </motion.p>
           <motion.h1
             initial={{ y: 24, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.25 }}
           >
-            {content.heroTitle}
+            {L(content.heroTitle)}
           </motion.h1>
           <motion.p
             initial={{ y: 24, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.35 }}
           >
-            {content.heroSubtitle}
+            {L(content.heroSubtitle)}
           </motion.p>
           <motion.div
             className="hero-actions"
@@ -49,10 +51,10 @@ export function Home() {
             transition={{ delay: 0.45 }}
           >
             <Link className="btn btn-primary" to="/quote">
-              Get an online estimate <ArrowRight size={18} />
+              {t('ctaEstimate')} <ArrowRight size={18} />
             </Link>
             <Link className="btn btn-ghost" to="/work">
-              See the work mural
+              {t('ctaMural')}
             </Link>
           </motion.div>
         </div>
@@ -61,8 +63,8 @@ export function Home() {
       <section className="section">
         <div className="container">
           <div className="section-head">
-            <h2>Recent work</h2>
-            <p>A mural of finished jobs — driveways, patios, and commercial hardscapes.</p>
+            <h2>{t('recentWork')}</h2>
+            <p>{t('recentWorkIntro')}</p>
           </div>
           <div className="grid-3">
             {featured.map((album) => (
@@ -71,7 +73,7 @@ export function Home() {
           </div>
           <div style={{ marginTop: '1.5rem' }}>
             <Link className="btn btn-ghost" to="/work">
-              View all albums
+              {t('viewAllAlbums')}
             </Link>
           </div>
         </div>
@@ -80,12 +82,12 @@ export function Home() {
       <section className="section section-muted">
         <div className="container about-layout">
           <div>
-            <p className="eyebrow">Who we are</p>
-            <h2 style={{ marginBottom: '1rem' }}>{content.aboutTitle}</h2>
-            <p className="about-copy">{content.aboutText}</p>
+            <p className="eyebrow">{t('whoWeAre')}</p>
+            <h2 style={{ marginBottom: '1rem' }}>{L(content.aboutTitle)}</h2>
+            <p className="about-copy">{L(content.aboutText)}</p>
             <div style={{ marginTop: '1.4rem' }}>
               <Link className="btn btn-primary" to="/about">
-                Read the experience
+                {t('readExperience')}
               </Link>
             </div>
           </div>
@@ -103,24 +105,24 @@ export function Home() {
       <section className="section">
         <div className="container">
           <div className="section-head">
-            <h2>{content.equipmentTitle}</h2>
-            <p>{content.equipmentIntro}</p>
+            <h2>{L(content.equipmentTitle)}</h2>
+            <p>{L(content.equipmentIntro)}</p>
           </div>
           <div className="grid-3">
             {content.equipment.slice(0, 3).map((item) => (
               <article key={item.id} className="equip-card">
-                <img src={item.imageUrl} alt={item.name} loading="lazy" />
+                <img src={item.imageUrl} alt={L(item.name)} loading="lazy" />
                 <div className="equip-body">
-                  <h3>{item.name}</h3>
-                  <p className="muted">{item.description}</p>
-                  <p className="rate">{item.dailyRate}</p>
+                  <h3>{L(item.name)}</h3>
+                  <p className="muted">{L(item.description)}</p>
+                  <p className="rate">{L(item.dailyRate)}</p>
                 </div>
               </article>
             ))}
           </div>
           <div style={{ marginTop: '1.5rem' }}>
             <Link className="btn btn-primary" to="/equipment">
-              Browse equipment rental
+              {t('browseEquipment')}
             </Link>
           </div>
         </div>

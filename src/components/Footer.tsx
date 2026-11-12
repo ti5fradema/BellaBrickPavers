@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import { useContent } from '../context/ContentContext'
+import { useLanguage } from '../context/LanguageContext'
 
 export function Footer() {
   const { content } = useContent()
+  const { t, L } = useLanguage()
 
   return (
     <footer className="footer">
@@ -10,18 +12,18 @@ export function Footer() {
         <div>
           <strong>{content.brandName}</strong>
           <p className="muted" style={{ marginTop: '0.4rem' }}>
-            {content.tagline}
+            {L(content.tagline)}
           </p>
         </div>
         <div>
           <p>{content.contactPhone}</p>
           <p>{content.contactEmail}</p>
-          <p className="muted">{content.serviceArea}</p>
+          <p className="muted">{L(content.serviceArea)}</p>
         </div>
         <div>
-          <Link to="/quote">Request a quote</Link>
+          <Link to="/quote">{t('requestQuoteLink')}</Link>
           <br />
-          <Link to="/admin">Admin login</Link>
+          <Link to="/admin">{t('adminLoginLink')}</Link>
         </div>
       </div>
     </footer>

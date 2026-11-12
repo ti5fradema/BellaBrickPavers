@@ -1,8 +1,13 @@
+import { LocalizedInput } from '../../components/LocalizedInput'
 import { useContent } from '../../context/ContentContext'
-import type { EquipmentItem, ExperienceItem } from '../../types'
+import type { EquipmentItem, ExperienceItem, LocalizedString } from '../../types'
 
 function newId() {
   return crypto.randomUUID()
+}
+
+function L(en: string, pt: string): LocalizedString {
+  return { en, pt }
 }
 
 export function AdminSite() {
@@ -30,7 +35,9 @@ export function AdminSite() {
     <div className="stack">
       <div>
         <h1>Site content</h1>
-        <p className="muted">Hero, about, experience, equipment, and contact — all live.</p>
+        <p className="muted">
+          Edit English (default) and Portuguese for every public text field.
+        </p>
       </div>
 
       <div className="field-block">
@@ -39,21 +46,22 @@ export function AdminSite() {
           Brand name
           <input value={content.brandName} onChange={(e) => setField('brandName', e.target.value)} />
         </label>
-        <label>
-          Tagline
-          <input value={content.tagline} onChange={(e) => setField('tagline', e.target.value)} />
-        </label>
-        <label>
-          Hero title
-          <input value={content.heroTitle} onChange={(e) => setField('heroTitle', e.target.value)} />
-        </label>
-        <label>
-          Hero subtitle
-          <textarea
-            value={content.heroSubtitle}
-            onChange={(e) => setField('heroSubtitle', e.target.value)}
-          />
-        </label>
+        <LocalizedInput
+          label="Tagline"
+          value={content.tagline}
+          onChange={(v) => setField('tagline', v)}
+        />
+        <LocalizedInput
+          label="Hero title"
+          value={content.heroTitle}
+          onChange={(v) => setField('heroTitle', v)}
+        />
+        <LocalizedInput
+          label="Hero subtitle"
+          multiline
+          value={content.heroSubtitle}
+          onChange={(v) => setField('heroSubtitle', v)}
+        />
         <label>
           Hero image URL
           <input value={content.heroImage} onChange={(e) => setField('heroImage', e.target.value)} />
@@ -62,53 +70,46 @@ export function AdminSite() {
 
       <div className="field-block">
         <h3>About / experience</h3>
-        <label>
-          About title
-          <input value={content.aboutTitle} onChange={(e) => setField('aboutTitle', e.target.value)} />
-        </label>
-        <label>
-          About text
-          <textarea
-            value={content.aboutText}
-            onChange={(e) => setField('aboutText', e.target.value)}
-            style={{ minHeight: 180 }}
-          />
-        </label>
+        <LocalizedInput
+          label="About title"
+          value={content.aboutTitle}
+          onChange={(v) => setField('aboutTitle', v)}
+        />
+        <LocalizedInput
+          label="About text"
+          multiline
+          value={content.aboutText}
+          onChange={(v) => setField('aboutText', v)}
+        />
         <label>
           About image URL
           <input value={content.aboutImage} onChange={(e) => setField('aboutImage', e.target.value)} />
         </label>
-        <label>
-          Experience section title
-          <input
-            value={content.experienceTitle}
-            onChange={(e) => setField('experienceTitle', e.target.value)}
-          />
-        </label>
-        <label>
-          Experience intro
-          <textarea
-            value={content.experienceIntro}
-            onChange={(e) => setField('experienceIntro', e.target.value)}
-          />
-        </label>
+        <LocalizedInput
+          label="Experience section title"
+          value={content.experienceTitle}
+          onChange={(v) => setField('experienceTitle', v)}
+        />
+        <LocalizedInput
+          label="Experience intro"
+          multiline
+          value={content.experienceIntro}
+          onChange={(v) => setField('experienceIntro', v)}
+        />
 
         {content.experience.map((item) => (
           <div key={item.id} className="stack" style={{ borderTop: '1px solid #333', paddingTop: '0.8rem' }}>
-            <label>
-              Item title
-              <input
-                value={item.title}
-                onChange={(e) => updateExperience(item.id, { title: e.target.value })}
-              />
-            </label>
-            <label>
-              Detail
-              <textarea
-                value={item.detail}
-                onChange={(e) => updateExperience(item.id, { detail: e.target.value })}
-              />
-            </label>
+            <LocalizedInput
+              label="Item title"
+              value={item.title}
+              onChange={(v) => updateExperience(item.id, { title: v })}
+            />
+            <LocalizedInput
+              label="Detail"
+              multiline
+              value={item.detail}
+              onChange={(v) => updateExperience(item.id, { detail: v })}
+            />
             <button
               type="button"
               className="btn btn-sm btn-danger"
@@ -132,7 +133,11 @@ export function AdminSite() {
               ...prev,
               experience: [
                 ...prev.experience,
-                { id: newId(), title: 'New specialty', detail: 'Describe this service.' },
+                {
+                  id: newId(),
+                  title: L('New specialty', 'Nova especialidade'),
+                  detail: L('Describe this service.', 'Descreva este serviço.'),
+                },
               ],
             }))
           }
@@ -143,41 +148,36 @@ export function AdminSite() {
 
       <div className="field-block">
         <h3>Equipment rental</h3>
-        <label>
-          Section title
-          <input
-            value={content.equipmentTitle}
-            onChange={(e) => setField('equipmentTitle', e.target.value)}
-          />
-        </label>
-        <label>
-          Intro
-          <textarea
-            value={content.equipmentIntro}
-            onChange={(e) => setField('equipmentIntro', e.target.value)}
-          />
-        </label>
+        <LocalizedInput
+          label="Section title"
+          value={content.equipmentTitle}
+          onChange={(v) => setField('equipmentTitle', v)}
+        />
+        <LocalizedInput
+          label="Intro"
+          multiline
+          value={content.equipmentIntro}
+          onChange={(v) => setField('equipmentIntro', v)}
+        />
 
         {content.equipment.map((item) => (
           <div key={item.id} className="stack" style={{ borderTop: '1px solid #333', paddingTop: '0.8rem' }}>
-            <label>
-              Name
-              <input value={item.name} onChange={(e) => updateEquipment(item.id, { name: e.target.value })} />
-            </label>
-            <label>
-              Description
-              <textarea
-                value={item.description}
-                onChange={(e) => updateEquipment(item.id, { description: e.target.value })}
-              />
-            </label>
-            <label>
-              Daily rate label
-              <input
-                value={item.dailyRate}
-                onChange={(e) => updateEquipment(item.id, { dailyRate: e.target.value })}
-              />
-            </label>
+            <LocalizedInput
+              label="Name"
+              value={item.name}
+              onChange={(v) => updateEquipment(item.id, { name: v })}
+            />
+            <LocalizedInput
+              label="Description"
+              multiline
+              value={item.description}
+              onChange={(v) => updateEquipment(item.id, { description: v })}
+            />
+            <LocalizedInput
+              label="Daily rate label"
+              value={item.dailyRate}
+              onChange={(v) => updateEquipment(item.id, { dailyRate: v })}
+            />
             <label>
               Image URL
               <input
@@ -210,9 +210,9 @@ export function AdminSite() {
                 ...prev.equipment,
                 {
                   id: newId(),
-                  name: 'New machine',
-                  description: 'Describe the rental unit.',
-                  dailyRate: 'From $0/day',
+                  name: L('New machine', 'Nova máquina'),
+                  description: L('Describe the rental unit.', 'Descreva o equipamento.'),
+                  dailyRate: L('From $0/day', 'A partir de US$ 0/dia'),
                   imageUrl:
                     'https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1000&q=80',
                 },
@@ -240,27 +240,22 @@ export function AdminSite() {
             onChange={(e) => setField('contactEmail', e.target.value)}
           />
         </label>
-        <label>
-          Address / note
-          <input
-            value={content.contactAddress}
-            onChange={(e) => setField('contactAddress', e.target.value)}
-          />
-        </label>
-        <label>
-          Service area
-          <input
-            value={content.serviceArea}
-            onChange={(e) => setField('serviceArea', e.target.value)}
-          />
-        </label>
-        <label>
-          Quote page intro
-          <textarea
-            value={content.quoteIntro}
-            onChange={(e) => setField('quoteIntro', e.target.value)}
-          />
-        </label>
+        <LocalizedInput
+          label="Address / note"
+          value={content.contactAddress}
+          onChange={(v) => setField('contactAddress', v)}
+        />
+        <LocalizedInput
+          label="Service area"
+          value={content.serviceArea}
+          onChange={(v) => setField('serviceArea', v)}
+        />
+        <LocalizedInput
+          label="Quote page intro"
+          multiline
+          value={content.quoteIntro}
+          onChange={(v) => setField('quoteIntro', v)}
+        />
       </div>
     </div>
   )

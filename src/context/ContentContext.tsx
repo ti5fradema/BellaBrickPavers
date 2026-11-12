@@ -8,14 +8,16 @@ import {
   type ReactNode,
 } from 'react'
 import { DEFAULT_CONTENT, STORAGE_KEY } from '../data/defaultContent'
-import type { ContentUpdater, QuoteRequest, SiteContent } from '../types'
+import type { ContentUpdater, Lang, QuoteRequest, SiteContent } from '../types'
 
 interface ContentContextValue {
   content: SiteContent
   updateContent: (updater: ContentUpdater) => void
   setContent: (next: SiteContent) => void
   resetContent: () => void
-  addQuoteRequest: (request: Omit<QuoteRequest, 'id' | 'createdAt'>) => void
+  addQuoteRequest: (
+    request: Omit<QuoteRequest, 'id' | 'createdAt'> & { lang?: Lang },
+  ) => void
   deleteQuoteRequest: (id: string) => void
   exportJson: () => string
   importJson: (raw: string) => void
@@ -53,9 +55,10 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const addQuoteRequest = useCallback(
-    (request: Omit<QuoteRequest, 'id' | 'createdAt'>) => {
+    (request: Omit<QuoteRequest, 'id' | 'createdAt'> & { lang?: Lang }) => {
       const entry: QuoteRequest = {
         ...request,
+        lang: request.lang ?? 'en',
         id: crypto.randomUUID(),
         createdAt: new Date().toISOString(),
       }

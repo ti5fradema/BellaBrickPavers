@@ -170,6 +170,44 @@ p {
   transform: translateY(-1px);
 }
 
+.lang-switch {
+  display: inline-flex;
+  border: 1px solid rgba(255, 212, 0, 0.35);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-inline: 0.25rem;
+}
+
+.lang-switch button {
+  border: 0;
+  background: transparent;
+  color: var(--gray-300);
+  font-weight: 800;
+  padding: 0.45rem 0.7rem;
+  cursor: pointer;
+}
+
+.lang-switch button.active,
+.lang-switch button:hover {
+  background: var(--yellow);
+  color: var(--gray-900);
+}
+
+.localized-fields {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.75rem;
+  border: 1px dashed rgba(255, 212, 0, 0.25);
+  border-radius: 8px;
+  background: rgba(255, 212, 0, 0.03);
+}
+
+.localized-label {
+  font-weight: 800;
+  color: var(--yellow);
+  font-size: 0.9rem;
+}
+
 .nav-toggle {
   display: none;
   background: transparent;

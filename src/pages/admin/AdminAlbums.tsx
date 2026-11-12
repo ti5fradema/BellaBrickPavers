@@ -1,25 +1,33 @@
 import { useState } from 'react'
+import { LocalizedInput } from '../../components/LocalizedInput'
 import { useContent } from '../../context/ContentContext'
-import type { Album, AlbumPhoto } from '../../types'
+import type { Album, AlbumPhoto, LocalizedString } from '../../types'
 
 function newId() {
   return crypto.randomUUID()
 }
 
+function L(en: string, pt: string): LocalizedString {
+  return { en, pt }
+}
+
 function emptyAlbum(): Album {
   return {
     id: newId(),
-    title: 'New project album',
-    description: 'Describe the job and materials used.',
+    title: L('New project album', 'Novo álbum de projeto'),
+    description: L(
+      'Describe the job and materials used.',
+      'Descreva a obra e os materiais usados.',
+    ),
     coverUrl:
       'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80',
-    location: 'City / neighborhood',
+    location: L('City / neighborhood', 'Cidade / bairro'),
     year: String(new Date().getFullYear()),
     photos: [
       {
         id: newId(),
         url: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=80',
-        caption: 'Main photo',
+        caption: L('Main photo', 'Foto principal'),
       },
     ],
   }
@@ -69,7 +77,10 @@ export function AdminAlbums() {
           ? album
           : {
               ...album,
-              photos: [...album.photos, { id: newId(), url, caption: file.name }],
+              photos: [
+                ...album.photos,
+                { id: newId(), url, caption: L(file.name, file.name) },
+              ],
             },
       ),
     }))
@@ -79,7 +90,7 @@ export function AdminAlbums() {
     <div className="stack">
       <div>
         <h1>Work albums</h1>
-        <p className="muted">Create albums, upload photos, and edit captions.</p>
+        <p className="muted">Create albums with EN + PT titles, descriptions, and captions.</p>
       </div>
 
       <div className="admin-toolbar">
@@ -111,9 +122,9 @@ export function AdminAlbums() {
               }}
               onClick={() => setSelectedId(album.id)}
             >
-              <strong>{album.title}</strong>
+              <strong>{album.title.en}</strong>
               <p className="muted">
-                {album.year} · {album.photos.length} photos
+                {album.year} · {album.photos.length} photos · PT: {album.title.pt}
               </p>
             </button>
           ))}
@@ -123,36 +134,29 @@ export function AdminAlbums() {
         {selected ? (
           <div className="field-block">
             <h3>Edit album</h3>
+            <LocalizedInput
+              label="Title"
+              value={selected.title}
+              onChange={(v) => patchAlbum(selected.id, { title: v })}
+            />
+            <LocalizedInput
+              label="Description"
+              multiline
+              value={selected.description}
+              onChange={(v) => patchAlbum(selected.id, { description: v })}
+            />
+            <LocalizedInput
+              label="Location"
+              value={selected.location}
+              onChange={(v) => patchAlbum(selected.id, { location: v })}
+            />
             <label>
-              Title
+              Year
               <input
-                value={selected.title}
-                onChange={(e) => patchAlbum(selected.id, { title: e.target.value })}
+                value={selected.year}
+                onChange={(e) => patchAlbum(selected.id, { year: e.target.value })}
               />
             </label>
-            <label>
-              Description
-              <textarea
-                value={selected.description}
-                onChange={(e) => patchAlbum(selected.id, { description: e.target.value })}
-              />
-            </label>
-            <div className="form-row">
-              <label>
-                Location
-                <input
-                  value={selected.location}
-                  onChange={(e) => patchAlbum(selected.id, { location: e.target.value })}
-                />
-              </label>
-              <label>
-                Year
-                <input
-                  value={selected.year}
-                  onChange={(e) => patchAlbum(selected.id, { year: e.target.value })}
-                />
-              </label>
-            </div>
             <label>
               Cover image URL
               <input
@@ -182,19 +186,17 @@ export function AdminAlbums() {
             <div className="photo-list">
               {selected.photos.map((photo) => (
                 <div key={photo.id} className="photo-row">
-                  <img src={photo.url} alt={photo.caption} />
+                  <img src={photo.url} alt={photo.caption.en} />
                   <div className="stack">
                     <input
                       value={photo.url}
                       onChange={(e) => patchPhoto(selected.id, photo.id, { url: e.target.value })}
                       placeholder="Image URL"
                     />
-                    <input
+                    <LocalizedInput
+                      label="Caption"
                       value={photo.caption}
-                      onChange={(e) =>
-                        patchPhoto(selected.id, photo.id, { caption: e.target.value })
-                      }
-                      placeholder="Caption"
+                      onChange={(v) => patchPhoto(selected.id, photo.id, { caption: v })}
                     />
                   </div>
                   <button
@@ -237,7 +239,7 @@ export function AdminAlbums() {
                               {
                                 id: newId(),
                                 url: selected.coverUrl,
-                                caption: 'New photo',
+                                caption: L('New photo', 'Nova foto'),
                               },
                             ],
                           },

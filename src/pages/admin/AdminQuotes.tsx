@@ -16,7 +16,7 @@ export function AdminQuotes() {
         content.quoteRequests.map((quote) => (
           <article key={quote.id} className="quote-item">
             <h3>
-              {quote.name} · {quote.projectType}
+              {quote.name} · {quote.projectType} · {(quote.lang ?? 'en').toUpperCase()}
             </h3>
             <p className="muted">{new Date(quote.createdAt).toLocaleString()}</p>
             <p>

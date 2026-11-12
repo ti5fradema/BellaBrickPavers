@@ -1,31 +1,38 @@
+export type Lang = 'en' | 'pt'
+
+export interface LocalizedString {
+  en: string
+  pt: string
+}
+
 export interface AlbumPhoto {
   id: string
   url: string
-  caption: string
+  caption: LocalizedString
 }
 
 export interface Album {
   id: string
-  title: string
-  description: string
+  title: LocalizedString
+  description: LocalizedString
   coverUrl: string
-  location: string
+  location: LocalizedString
   year: string
   photos: AlbumPhoto[]
 }
 
 export interface EquipmentItem {
   id: string
-  name: string
-  description: string
-  dailyRate: string
+  name: LocalizedString
+  description: LocalizedString
+  dailyRate: LocalizedString
   imageUrl: string
 }
 
 export interface ExperienceItem {
   id: string
-  title: string
-  detail: string
+  title: LocalizedString
+  detail: LocalizedString
 }
 
 export interface QuoteRequest {
@@ -36,29 +43,30 @@ export interface QuoteRequest {
   address: string
   projectType: string
   message: string
+  lang: Lang
   createdAt: string
 }
 
 export interface SiteContent {
   brandName: string
-  tagline: string
-  heroTitle: string
-  heroSubtitle: string
+  tagline: LocalizedString
+  heroTitle: LocalizedString
+  heroSubtitle: LocalizedString
   heroImage: string
-  aboutTitle: string
-  aboutText: string
+  aboutTitle: LocalizedString
+  aboutText: LocalizedString
   aboutImage: string
-  experienceTitle: string
-  experienceIntro: string
+  experienceTitle: LocalizedString
+  experienceIntro: LocalizedString
   experience: ExperienceItem[]
-  equipmentTitle: string
-  equipmentIntro: string
+  equipmentTitle: LocalizedString
+  equipmentIntro: LocalizedString
   equipment: EquipmentItem[]
   contactPhone: string
   contactEmail: string
-  contactAddress: string
-  serviceArea: string
-  quoteIntro: string
+  contactAddress: LocalizedString
+  serviceArea: LocalizedString
+  quoteIntro: LocalizedString
   albums: Album[]
   quoteRequests: QuoteRequest[]
   adminPassword: string
